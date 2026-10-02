@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product UX Frontend - Aniket Singh</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0d0d;
+    --paper: #f5f0e8;
+    --cream: #ede8dc;
+    --accent: #c8401a;
+    --accent2: #2a4d6e;
+    --gold: #b8860b;
+    --muted: #6b6560;
+    --rule: #c4bfb5;
+    --col-w: 780px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { font-size: 15px; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Mono', monospace;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── PRINT STYLES ── */
+  @media print {
+    body { background: white; font-size: 11px; }
+    .hero { padding: 2rem 2rem 1.5rem; }
+    section { break-inside: avoid; }
+    .tag-cloud { gap: 0.3rem; }
+    .tag { font-size: 0.65rem; padding: 2px 6px; }
+  }
+
+  /* ── LAYOUT ── */
+  .page-wrap {
+    max-width: var(--col-w);
+    margin: 0 auto;
+    padding: 0 1.5rem 4rem;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    padding: 3.5rem 0 2rem;
+    border-bottom: 2px solid var(--ink);
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: 'UX';
+    position: absolute;
+    top: -0.5rem;
+    right: -1rem;
+    font-family: 'DM Serif Display', serif;
+    font-size: 11rem;
+    color: var(--cream);
+    letter-spacing: -0.05em;
+    line-height: 1;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .hero-inner { position: relative; z-index: 1; }
+
+  .name {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.8rem, 7vw, 4.8rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+
+  .name span { color: var(--accent); }
+
+  .role-line {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 0.25rem;
+  }
+
+  .sub-role {
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    font-size: 0.72rem;
+    color: var(--muted);
+    border-top: 1px solid var(--rule);
+    padding-top: 1rem;
+    margin-top: 1rem;
+  }
+
+  .contact-strip a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .contact-strip a:hover { color: var(--accent2); }
+
+  .contact-item { display: flex; align-items: center; gap: 0.35rem; }
+
+  /* ── SECTION ── */
+  section { padding: 2rem 0 0; }
+
+  .section-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  /* ── SUMMARY ── */
+  .summary-text {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--ink);
+    border-left: 3px solid var(--accent);
+    padding-left: 1.2rem;
+  }
+
+  /* ── COMPETENCIES ── */
+  .comp-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+  }
+
+  @media (max-width: 600px) {
+    .comp-grid { grid-template-columns: 1fr; }
+  }
+
+  .comp-block {
+    background: var(--cream);
+    padding: 1rem 1.1rem;
+    border: 1px solid var(--rule);
+  }
+
+  .comp-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 0.6rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .tag-cloud { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+
+  .tag {
+    font-size: 0.68rem;
+    padding: 2px 8px;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    color: var(--ink);
+    line-height: 1.6;
+  }
+
+  /* ── EXPERIENCE ── */
+  .exp-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0 1.2rem;
+    padding: 1.4rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .exp-item:last-child { border-bottom: none; }
+
+  .exp-index {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    color: var(--rule);
+    line-height: 1;
+    padding-top: 0.2rem;
+    min-width: 2rem;
+    text-align: right;
+  }
+
+  .exp-role {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+
+  .exp-meta {
+    font-size: 0.68rem;
+    color: var(--muted);
+    margin-top: 0.15rem;
+    margin-bottom: 0.6rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .exp-company {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    color: var(--accent2);
+  }
+
+  .exp-period {
+    font-size: 0.65rem;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 1px 6px;
+  }
+
+  .exp-bullets { list-style: none; }
+
+  .exp-bullets li {
+    font-size: 0.76rem;
+    line-height: 1.65;
+    color: #2a2520;
+    padding-left: 1rem;
+    position: relative;
+    margin-bottom: 0.3rem;
+  }
+
+  .exp-bullets li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 0.65rem;
+    top: 0.05em;
+  }
+
+  /* ── PROJECTS ── */
+  .proj-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+
+  @media (max-width: 550px) {
+    .proj-grid { grid-template-columns: 1fr; }
+  }
+
+  .proj-item {
+    background: var(--paper);
+    padding: 1rem 1.1rem;
+    transition: background 0.2s;
+  }
+
+  .proj-item:hover { background: var(--cream); }
+
+  .proj-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 0.35rem;
+  }
+
+  .proj-desc {
+    font-size: 0.71rem;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  /* ── EDUCATION ── */
+  .edu-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+  }
+
+  @media (max-width: 550px) {
+    .edu-grid { grid-template-columns: 1fr; }
+  }
+
+  .edu-item {
+    padding: 1rem 1.2rem;
+    border: 1px solid var(--rule);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .edu-item::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--accent2);
+  }
+
+  .edu-degree {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 0.2rem;
+    line-height: 1.3;
+  }
+
+  .edu-inst {
+    font-size: 0.7rem;
+    color: var(--accent2);
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+  }
+
+  .edu-year {
+    font-size: 0.65rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .edu-skills {
+    font-size: 0.67rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* ── ACHIEVEMENTS ── */
+  .ach-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+
+  @media (max-width: 550px) {
+    .ach-grid { grid-template-columns: 1fr; }
+  }
+
+  .ach-item {
+    background: var(--paper);
+    padding: 1rem 1rem 1rem;
+    text-align: center;
+  }
+
+  .ach-icon {
+    font-size: 1.4rem;
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+
+  .ach-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 0.25rem;
+  }
+
+  .ach-desc {
+    font-size: 0.67rem;
+    color: var(--muted);
+    line-height: 1.45;
+  }
+
+  /* ── FOOTER ── */
+  .resume-footer {
+    margin-top: 2.5rem;
+    padding-top: 1.2rem;
+    border-top: 2px solid var(--ink);
+    font-size: 0.65rem;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .resume-footer a { color: var(--accent); text-decoration: none; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-inner { animation: fadeUp 0.6s ease both; }
+  section { animation: fadeUp 0.5s ease both; }
+  section:nth-child(2) { animation-delay: 0.08s; }
+  section:nth-child(3) { animation-delay: 0.14s; }
+  section:nth-child(4) { animation-delay: 0.2s; }
+  section:nth-child(5) { animation-delay: 0.26s; }
+  section:nth-child(6) { animation-delay: 0.32s; }
+  section:nth-child(7) { animation-delay: 0.38s; }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="role-line">UX / PRODUCT ENGINEER | FRONTEND + AI PRODUCT ENGINEERING</div>
+      <h1 class="name">Aniket<br><span>Singh</span></h1>
+      <div class="sub-role">Design Systems · AI-Assisted Workflows (MCP) · Component Systems · Data Visualization</div>
+      <div class="contact-strip">
+        <div class="contact-item">✉ <a href="mailto:singhaniket255@gmail.com">singhaniket255@gmail.com</a></div>
+        <div class="contact-item">☎ +91 8291745846 / +91 7602085145</div>
+        <div class="contact-item">◉ UP, India — Open to Relocation</div>
+        <div class="contact-item">
+          <a href="https://singhaniket255.notion.site/Aniket-Singh-53b2ebdbc991430ab91c2cd8acad2f1f" target="_blank">Portfolio</a> ·
+          <a href="https://www.linkedin.com/in/aniketsingh255" target="_blank">LinkedIn</a> ·
+          <a href="https://github.com/singhaniket255" target="_blank">GitHub</a> ·
+          <a href="https://www.behance.net/singhaniket255" target="_blank">Behance</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- SUMMARY -->
+  <section>
+    <div class="section-label">Professional Summary</div>
+    <p class="summary-text">
+      UX Engineer / Product Engineer with 7+ years of experience across UX, frontend development, design systems, and AI-assisted product development. Experienced in modernizing complex enterprise applications, translating legacy workflows into scalable web experiences, and bridging product design with engineering implementation. Currently contributing to enterprise healthcare application modernization at CVS Health, working across UX research, information architecture, workflow analysis, low-fidelity prototyping, accessibility, and component-based UI systems. Proficient in React, TypeScript, JavaScript, Tailwind CSS, Figma, design systems, Syncfusion, Blazor, AI-assisted development, and modern design-to-code workflows.
+    </p>
+  </section>
+
+  <!-- COMPETENCIES -->
+  <section>
+    <div class="section-label">Core Competencies</div>
+    <div class="comp-grid">
+      <div class="comp-block">
+        <div class="comp-title">UX / Research</div>
+        <div class="tag-cloud">
+          <span class="tag">User-Centred Design</span><span class="tag">Journey Mapping</span>
+          <span class="tag">Design Systems</span><span class="tag">Design Tokens</span>
+          <span class="tag">Wireframing</span><span class="tag">Prototyping</span>
+          <span class="tag">Usability Testing (A/B, Remote, Guerilla, Tree Testing)</span><span class="tag">Progressive Disclosure</span>
+          <span class="tag">Heuristic Evaluation</span><span class="tag">Mental Models</span>
+          <span class="tag">Information Architecture</span><span class="tag">Empathy Mapping</span>
+          <span class="tag">Personas</span><span class="tag">iOS & Android UX</span>
+          <span class="tag">CTR · NPS · CSAT</span><span class="tag">Card Sorting</span>
+        </div>
+      </div>
+      <div class="comp-block">
+        <div class="comp-title">Design Tools</div>
+        <div class="tag-cloud">
+          <span class="tag">Figma AI (MCP + Dev Mode)</span><span class="tag">Adobe XD</span>
+          <span class="tag">InVision</span><span class="tag">Protopie</span>
+          <span class="tag">Miro</span><span class="tag">Framer</span>
+          <span class="tag">Webflow</span><span class="tag">Hotjar</span>
+          <span class="tag">JIRA</span><span class="tag">Power BI</span>
+          <span class="tag">Lottie</span><span class="tag">Adobe CC (PS, AI, AE, Pr, Id) · Firefly</span>
+          <span class="tag">Spline</span><span class="tag">Notion AI</span>
+          <span class="tag">FigJam</span><span class="tag">Veo 3</span>
+          <span class="tag">SolidWorks</span><span class="tag">D3 / Dashboards</span>
+        </div>
+      </div>
+      <div class="comp-block">
+        <div class="comp-title">Development · Agile · AI</div>
+        <div class="tag-cloud">
+          <span class="tag">HTML5 · CSS3 · Syncfusion · Blazor</span><span class="tag">React.js (Component
+Architecture, Hooks, State Management)</span>
+          <span class="tag">Tailwind CSS</span><span class="tag">TypeScript</span>
+          <span class="tag">Replit</span><span class="tag">Node.js</span>
+          <span class="tag">Web Components</span><span class="tag">Cursor</span>
+          <span class="tag">Claude Code</span><span class="tag">Codex</span>
+          <span class="tag">Agile/Scrum</span><span class="tag">Google Analytics</span>
+          <span class="tag">Vite</span><span class="tag">GPT</span>
+          <span class="tag">SharePoint</span><span class="tag">WordPress</span>
+          <span class="tag">MCP Server</span><span class="tag">Git · v0 · Lovable</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section>
+    <div class="section-label">Work Experience</div>
+
+        <div class="exp-item">
+      <div class="exp-index">01</div>
+      <div>
+        <div class="exp-role">Senior UI/UX Developer | UX + Product Engineering (Contract)</div>
+        <div class="exp-meta">
+          <span class="exp-company"> CVS Health (via Insight Global)</span>
+          <span class="exp-period">Aug 2025 – April 2026</span>
+        </div>
+        <ul class="exp-bullets">
+          <li>Contributing to the ERNIE modernization initiative, transforming a legacy enterprise healthcare application into a modern web-based experience
+across medical, dental, and vision workflows.</li>
+          <li>Conducting UX audits, workflow analysis, information architecture reviews, and modernization assessments across complex legacy application
+screens and user journeys.</li>
+          <li>Supporting documentation and UX deliverables across EWCRs, including User Workflow & Information Architecture Analysis and UX Findings & Modernization Recommendations.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-index">02</div>
+      <div>
+        <div class="exp-role">User Experience Engineer (Freelance)</div>
+        <div class="exp-meta">
+          <span class="exp-company">Independent</span>
+          <span class="exp-period">Aug 2025 – April 2026</span>
+        </div>
+        <ul class="exp-bullets">
+          <li>Full-stack end-to-end delivery for LG Electronics, SynergyPharma, Thyssenkrupp Aerospace, and Eduventure (IIM Sambalpur), with React UI implementation from Figma to production.</li>
+          <li>Concept Case Study: ROS Robot Monitoring Dashboard — applied UI/UX principles including visual hierarchy, progressive disclosure, and real-time feedback for industrial monitoring.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-index">03</div>
+      <div>
+        <div class="exp-role">MC Delivery Analyst</div>
+        <div class="exp-meta">
+          <span class="exp-company">Accenture</span>
+          <span class="exp-period">Nov 2024 – Jul 2025</span>
+        </div>
+        <ul class="exp-bullets">
+          <li>Led UX delivery and change enablement for enterprise stakeholders, designing user-centric interfaces and communication templates with WCAG compliance.</li>
+          <li>Architected SharePoint sites optimising information architecture and responsive views for enterprise-scale HRMS and CRM dashboards.</li>
+          <li>Developed reusable React component systems from Figma Dev Mode using Tailwind, improving development speed and consistency.</li>
+          <li>Collaborated with cross-functional teams in Agile, bridging design intent with development and presentation implementation.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-index">04</div>
+      <div>
+        <div class="exp-role">UX/UI Designer & Frontend Developer</div>
+        <div class="exp-meta">
+          <span class="exp-company">Xtended Space Technology Pvt. Ltd.</span>
+          <span class="exp-period">Jan 2024 – May 2024</span>
+        </div>
+        <ul class="exp-bullets">
+          <li>Applied Vibe Coding methodology (Cursor + Claude Code) to convert Figma designs into production-ready React.js + Tailwind CSS interfaces — cutting design-to-dev time by 95% accuracy.</li>
+          <li>Implemented WCAG 2.1 and ARIA-based accessibility enhancements across the design system for Flagship.club.</li>
+          <li>Built SharePoint document libraries with custom permission structures for NDA-protected VC workflows.</li>
+          <li>Developed a bespoke curriculum covering React component architecture, design systems, API design, and frontend engineering best practices.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-index">05</div>
+      <div>
+        <div class="exp-role">Technical Mentor — Product & Design</div>
+        <div class="exp-meta">
+          <span class="exp-company">Private Client (Suneja Family Portfolio)</span>
+          <span class="exp-period">Mar 2024 – Mar 2025</span>
+        </div>
+        <ul class="exp-bullets">
+          <li>High-level UX mentorship to founders of 5 portfolio startups, aligning product design strategy with market standards in AI tools and interaction design.</li>
+          <li>Developed bespoke curriculum in UI/UX principles, design thinking, and creative strategy for funded startups.</li>
+          <li>Executed Shopify storefront UX and frontend design for Aragaza, optimising layout and responsiveness.</li>
+          <li>Directed corporate video and infographic motion production for OSE, improving project clarity by 50% and engagement by 45%.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-index">06</div>
+      <div>
+        <div class="exp-role">Senior Manager, Design (Contractual)</div>
+        <div class="exp-meta">
+          <span class="exp-company">The Perfectionist</span>
+          <span class="exp-period">Sep 2023 – Dec 2023</span>
+        </div>
+        <ul class="exp-bullets">
+          <li>Delivered corporate branding and design leadership during a key contractual engagement.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-index">07</div>
+      <div>
+        <div class="exp-role">Design Specialist – Product Development</div>
+        <div class="exp-meta">
+          <span class="exp-company">Sharify Services (Statiq)</span>
+          <span class="exp-period">Sep 2022 – Aug 2023</span>
+        </div>
+        <ul class="exp-bullets">
+          <li>Built an EV charger real-time data dashboard with dynamic UI states, alerts, and system feedback patterns — paralleling IoT/enterprise UX.</li>
+          <li>Responsive landing pages for 22KW & 60KW Dual Gun EV chargers contributed to a 50% increase in installations and major hotel partnerships (ITC, DoubleTree by Hilton).</li>
+          <li>Architected usability-testing prototypes for the Shell Recharge App across design and engineering teams.</li>
+          <li>Delivered a reusable SaaS onboarding framework with Lottie JSON micro-interactions. Promoted within FY23 for bridging design and development.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-index">08</div>
+      <div>
+        <div class="exp-role">Graphic Design Lead</div>
+        <div class="exp-meta">
+          <span class="exp-company">Sunstone Education Technology</span>
+          <span class="exp-period">Oct 2021 – Aug 2022</span>
+        </div>
+        <ul class="exp-bullets">
+          <li>Led design direction for motion graphics and festive campaign assets, boosting social media engagement and brand visibility across the MyFuture platform.</li>
+          <li>Managed design workflow, mentored junior designers, and maintained brand consistency.</li>
+        </ul>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- PROJECTS -->
+  <section>
+    <div class="section-label">Selective Projects</div>
+    <div class="proj-grid">
+      <div class="proj-item">
+        <div class="proj-name">AI Payment App — SaaS Fintech</div>
+        <div class="proj-desc">Modular AI-powered fintech SaaS using Vibe Coding, AI-assisted UI generation, and component-based architecture. Delivered a scalable, implementation-ready product system with full UX documentation.</div>
+      </div>
+      <div class="proj-item">
+        <div class="proj-name">RideHaven — Car Rental Platform</div>
+        <div class="proj-desc">End-to-end UX for a responsive web and mobile car rental platform. User research, personas, empathy mapping, competitive analysis, and Gestalt-based navigation design.</div>
+      </div>
+      <div class="proj-item">
+        <div class="proj-name">STRIDE Sports App — AI-Driven UX</div>
+        <div class="proj-desc">IIIT Bangalore capstone integrating AI-assisted workflows and Agentic Experience principles for a complex multi-feature mobile sports application.</div>
+      </div>
+      <div class="proj-item">
+        <div class="proj-name">Shell Recharge App (EV / Mobile)</div>
+        <div class="proj-desc">End-to-end UX for EV charging mobile experience. Structured information architecture, accessible user flows and design systems, interactive prototypes for usability testing.</div>
+      </div>
+      <div class="proj-item">
+        <div class="proj-name">ROS Robot Monitoring Dashboard</div>
+        <div class="proj-desc">UI/UX concept for industrial robot monitoring using visual hierarchy, progressive disclosure, real-time feedback, and safety-first interaction patterns for RaaS industrial automation.</div>
+      </div>
+      <div class="proj-item">
+        <div class="proj-name">Continental Foods — D2C E-Commerce</div>
+        <div class="proj-desc">Responsive D2C e-commerce platform using AI-assisted UX workflows, improving navigation clarity, product discoverability, and conversion readiness across flagship brands.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section>
+    <div class="section-label">Education</div>
+    <div class="edu-grid">
+      <div class="edu-item">
+        <div class="edu-degree">PG Program, UI/UX Design</div>
+        <div class="edu-inst">International Institute of Information Technology, Bangalore</div>
+        <div class="edu-year">2023 – Jan 2025 · Top 1% of cohort</div>
+        <div class="edu-skills">Rapid Prototyping · Competitive Analysis · Empathy Mapping · User Personas · Design Tokens · Usability Testing · A/B Testing · Heuristic Evaluation · Accessibility · Agentic Experience (AX) Design</div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-degree">B.Eng., Mechanical Engineering (Manufacturing)</div>
+        <div class="edu-inst">Sant Longowal Institute of Engineering & Technology</div>
+        <div class="edu-year">2014 – 2018 · IIT JEE Top 1%</div>
+        <div class="edu-skills">Research: ROS / SLAM (IIT Delhi & IIT Kharagpur) · Visual Saliency Detection · Object Tracking. Provides a systems-thinking foundation for industrial UX.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACHIEVEMENTS -->
+  <section>
+    <div class="section-label">Notable Achievements</div>
+    <div class="ach-grid">
+      <div class="ach-item">
+        <span class="ach-icon">🏆</span>
+        <div class="ach-title">Top 1%</div>
+        <div class="ach-desc">IIIT Bangalore PG Program cohort ranking</div>
+      </div>
+      <div class="ach-item">
+        <span class="ach-icon">📈</span>
+        <div class="ach-title">50% Installation Increase</div>
+        <div class="ach-desc">UX-led landing pages for Statiq EV Chargers</div>
+      </div>
+      <div class="ach-item">
+        <span class="ach-icon">🌐</span>
+        <div class="ach-title">Google GOMC Finalist</div>
+        <div class="ach-desc">Asia-Pacific category, Google Online Marketing Challenge</div>
+      </div>
+      <div class="ach-item">
+        <span class="ach-icon">🚀</span>
+        <div class="ach-title">Palo Alto Investor Symposium</div>
+        <div class="ach-desc">Pitchdeck for Flagship.club secured U.S. investor funding</div>
+      </div>
+      <div class="ach-item">
+        <span class="ach-icon">⬆</span>
+        <div class="ach-title">Promoted FY23 at Statiq</div>
+        <div class="ach-desc">Recognized for bridging design & development via UX-led implementation</div>
+      </div>
+      <div class="ach-item">
+        <span class="ach-icon">✏</span>
+        <div class="ach-title">2 Published Products</div>
+        <div class="ach-desc">Exclusive Envato Market Author — 90+ sales across design brush packs</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="resume-footer">
+    <span>Full portfolio, CV & work samples: <a href="https://singhaniket255.notion.site/Aniket-Singh-53b2ebdbc991430ab91c2cd8acad2f1f" target="_blank">Portfolio</a> · <a href="https://drive.google.com/file/d/1_O7EyppPcy8fEbq8xTJDjAhb-tv3ZYtu/view?usp=drive_link" target="_blank">Cover Letter</a> · <a href="https://www.linkedin.com/in/aniketsingh255" target="_blank">LinkedIn</a> · <a href="https://www.behance.net/singhaniket255">Behance</a> · <a href="https://github.com/singhaniket255" target="_blank">GitHub</a> · <a href="https://graphicriver.net/user/gravitas_studio/portfolio" target="_blank">Envato</a></span>
+    <span>© Aniket Singh · 2025</span>
+  </footer>
+
+</div>
+</body>
+</html>
